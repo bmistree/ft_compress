@@ -16,6 +16,12 @@ Entry::~Entry()
     _action_list.clear();
 }
 
+bool Entry::sort_unique_ptr_by_priority(
+    const UniqueEntryPtr& a, const UniqueEntryPtr& b)
+{
+    return a->priority() < b->priority();
+}
+
 int Entry::priority() const
 {
     return _priority;
