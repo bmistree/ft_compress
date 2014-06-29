@@ -6,8 +6,9 @@
 class Action
 {};
 
-typedef std::vector<Action> ActionList;
-
+typedef std::vector<Action*> ActionList;
+typedef ActionList::iterator ActionListIter;
+typedef ActionList::const_iterator ActionListCIter;
 
 class DropAction : public Action
 {
