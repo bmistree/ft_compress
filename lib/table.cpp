@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 
+
 Table::Table()
 {
     static TableId tid_generator = 0;
@@ -15,6 +16,12 @@ Table::~Table()
 TableId Table::id() const
 {
     return _id;
+}
+
+void Table::chain_tables(SharedTablePtr parent, SharedTablePtr child)
+{
+    parent->_children.insert(child);
+    child->_parent = parent;
 }
 
 void Table::debug_print_table() const
