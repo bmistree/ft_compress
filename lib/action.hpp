@@ -24,4 +24,4 @@ public:
     ~ForwardAction();
 };
 
-#endif __ACTION_HPP__
+#endif

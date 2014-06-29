@@ -1,8 +1,8 @@
 #include "header.hpp"
 
 
-Header::Header(std::string header_string)
- : _header_string(header_string)
+Header::Header(std::string header_str)
+ : _header_str(header_str)
 {}
 Header::~Header()
 {}

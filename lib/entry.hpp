@@ -7,7 +7,7 @@
 class Entry
 {
 public:
-    Entry(int priority,Header match);
+    Entry(int priority,const Header& match);
     ~Entry();
     int priority() const;
     int priority(int new_priority);

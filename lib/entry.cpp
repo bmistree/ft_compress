@@ -1,6 +1,7 @@
 #include "entry.hpp"
+#include "header.hpp"
 
-Entry::Entry(int priority,Match match)
+Entry::Entry(int priority,const Header& match)
  : _priority (priority),
    _match (match)
 {}
@@ -25,7 +26,7 @@ int Entry::priority(int new_priority)
     return _priority;
 }
 
-const Match& Entry::match() const
+const Header& Entry::match() const
 {
     return _match;
 }

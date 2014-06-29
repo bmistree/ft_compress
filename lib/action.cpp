@@ -10,6 +10,6 @@ DropAction::~DropAction()
 /** ForwardAction */
 ForwardAction::ForwardAction()
 {}
-ForwardAction~ForwardAction()
+ForwardAction::~ForwardAction()
 {}
 
