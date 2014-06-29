@@ -1,5 +1,7 @@
 #include "table.hpp"
 #include <algorithm>
+#include <iostream>
+#include <iomanip>
 
 Table::Table()
 {
@@ -15,7 +17,18 @@ TableId Table::id() const
     return _id;
 }
 
-void Table::add_entry(UniqueEntryPtr entry_ptr)
+void Table::debug_print_table() const
+{
+    std::cout<<"\nPrinting table "<< _id<<"\n";
+    for (EntryVecCIter citer = _entries.begin(); citer != _entries.end();
+         ++citer)
+    {
+        (*citer)->debug_print_entry();
+        std::cout<<"\n";
+    }
+}
+
+void Table::add_entry(UniqueEntryPtr& entry_ptr)
 {
     _entries.push_back(std::move(entry_ptr));
 }

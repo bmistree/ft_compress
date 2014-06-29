@@ -11,8 +11,9 @@ public:
     Table();
     ~Table();
     TableId id() const;
-    void add_entry(UniqueEntryPtr entry_ptr);
+    void add_entry(UniqueEntryPtr& entry_ptr);
     void finalize();
+    void debug_print_table() const;
 private:
     TableId _id;
     EntryVec _entries;

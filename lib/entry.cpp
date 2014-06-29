@@ -1,5 +1,8 @@
+#include <memory>
 #include "entry.hpp"
 #include "header.hpp"
+#include <iostream>
+#include <iomanip>
 
 Entry::Entry(int priority,const Header& match)
  : _priority (priority),
@@ -14,6 +17,12 @@ Entry::~Entry()
         delete *iter;
     }
     _action_list.clear();
+}
+
+void Entry::debug_print_entry() const
+{
+    std::cout<<"\tpriority: "<<_priority<<"\n";
+    std::cout<<"\tmatch: "<<_match.header_str()<<"\n";
 }
 
 bool Entry::sort_unique_ptr_by_priority(

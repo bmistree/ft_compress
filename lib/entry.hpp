@@ -20,6 +20,7 @@ public:
     void add_action(Action* action);
     static bool sort_unique_ptr_by_priority(
         const UniqueEntryPtr& a, const UniqueEntryPtr& b);
+    void debug_print_entry() const;
     
 private:
     int _priority;

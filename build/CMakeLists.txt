@@ -20,3 +20,7 @@ add_library(
 project (create_entries)
 add_executable(create_entries "${TEST_FOLDER}/create_entries.cpp" ${LIB_HEADERS})
 target_link_libraries(create_entries COMPRESS_LIB)
+
+project (sort_table)
+add_executable(sort_table "${TEST_FOLDER}/sort_table.cpp" ${LIB_HEADERS})
+target_link_libraries(sort_table COMPRESS_LIB)
