@@ -12,11 +12,10 @@ class Header
 {
 public:
     Header(std::string header_str);
-    ~Match();
+    ~Header();
     
 private:
     std::string _header_str;
-    
 };
 
 #endif
