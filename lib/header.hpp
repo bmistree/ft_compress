@@ -20,7 +20,7 @@ public:
     /**
        @returns Returns true if h is a superset of this.  False otherwise.
      */
-    bool superset(const Header& h) const;
+    bool is_subset_of(const Header& h) const;
     
 private:
     std::string _header_str;

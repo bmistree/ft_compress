@@ -64,5 +64,5 @@ bool check(
     const Header& potential_superset, const Header& potential_subset,
     bool is_superset)
 {
-    return is_superset == potential_subset.superset(potential_superset);
+    return is_superset == potential_subset.is_subset_of(potential_superset);
 }

@@ -8,7 +8,7 @@ Header::Header(std::string header_str)
 Header::~Header()
 {}
 
-bool Header::superset(const Header& h) const
+bool Header::is_subset_of(const Header& h) const
 {
     //Returns true if h is a superset of this.  False otherwise.
     if (h._header_str.size() != _header_str.size())
