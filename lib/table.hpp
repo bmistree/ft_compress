@@ -38,8 +38,10 @@ public:
     /**
        From all rules that have wildcards in this table, choose one at random
        and split it into two largest rules that we can.
+       
+       @returns Returns true if has an entry to split.  false if do not.       
      */
-    void split_random();
+    bool split_random();
     
 private:
     TableId _id;

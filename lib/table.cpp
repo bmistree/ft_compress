@@ -55,7 +55,7 @@ void Table::filter_eclipsed()
     }
 }
 
-void Table::split_random()
+bool Table::split_random()
 {
     // Grab random wildcard rule
 
@@ -68,6 +68,9 @@ void Table::split_random()
             wildcard_rule_indices.push_back(i);
     }
 
+    if (wildcard_rule_indices.empty())
+        return false;
+    
     int wildcard_rule_indices_index = rand() % wildcard_rule_indices.size();
     int wildcard_rule_index =
         wildcard_rule_indices[wildcard_rule_indices_index];
@@ -78,6 +81,7 @@ void Table::split_random()
     //_entries.insert(wildcard_rule_index,std::move(new_entry));
     _entries.push_back(std::move(new_entry));
     finalize();
+    return true;
 }
 
 
