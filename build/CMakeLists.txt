@@ -32,3 +32,7 @@ target_link_libraries(header_superset COMPRESS_LIB)
 project (eclipse_filter)
 add_executable(eclipse_filter "${TEST_FOLDER}/eclipse_filter.cpp" ${LIB_HEADERS})
 target_link_libraries(eclipse_filter COMPRESS_LIB)
+
+project (split_random)
+add_executable(split_random "${TEST_FOLDER}/split_random.cpp" ${LIB_HEADERS})
+target_link_libraries(split_random COMPRESS_LIB)
