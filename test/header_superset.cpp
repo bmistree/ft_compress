@@ -35,8 +35,8 @@ int main(int argc, char**argv)
         
         if ((!check(testing_against,test_match_1,true)) ||
             (!check(testing_against,test_match_2,true)) ||
-            (!check(testing_against,test_match_2,false)) ||
-            (!check(testing_against,test_match_2,false)))
+            (!check(testing_against,test_match_3,false)) ||
+            (!check(testing_against,test_match_4,false)))
         {
             std::cout<<"\nFailed\n";
             return -1;
@@ -47,7 +47,7 @@ int main(int argc, char**argv)
         Header testing_against("11010");
         Header test_match_1("01010"); // should not match
         Header test_match_2("11010"); // should match
-        if ((!check(testing_against,test_match_1,true)) ||
+        if ((!check(testing_against,test_match_1,false)) ||
             (!check(testing_against,test_match_2,true)))
         {
             std::cout<<"\nFailed\n";
