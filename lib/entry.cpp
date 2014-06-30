@@ -25,10 +25,10 @@ void Entry::debug_print_entry() const
     std::cout<<"\tmatch: "<<_match.header_str()<<"\n";
 }
 
-bool Entry::sort_unique_ptr_by_priority(
+bool Entry::sort_unique_ptr_by_priority_descending(
     const UniqueEntryPtr& a, const UniqueEntryPtr& b)
 {
-    return a->priority() < b->priority();
+    return a->priority() > b->priority();
 }
 
 int Entry::priority() const

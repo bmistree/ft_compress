@@ -18,7 +18,8 @@ public:
     int priority(int new_priority);
     const Header& match() const;
     void add_action(Action* action);
-    static bool sort_unique_ptr_by_priority(
+    // sorts so that higher priority is closer to zero index of vector
+    static bool sort_unique_ptr_by_priority_descending(
         const UniqueEntryPtr& a, const UniqueEntryPtr& b);
     void debug_print_entry() const;
     

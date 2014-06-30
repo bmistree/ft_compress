@@ -41,7 +41,7 @@ public:
 private:
     TableId _id;
 
-    // sorted by priority.  Lower priority closer to index 0.
+    // sorted by priority.  Higher priority closer to index 0.
     EntryVec _entries;
     TablePtrSet _children;
     SharedTablePtr _parent;

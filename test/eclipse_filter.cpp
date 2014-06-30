@@ -30,7 +30,6 @@ Returns true if ends with table of this form:
 A   2000         10101
 C   1998         11011
 D   1997         1x111
-G   1994         11111
 H   1993         11110
 I   1992         xxxxx
  */
@@ -128,14 +127,14 @@ bool run()
     UniqueEntryPtr entry_ptr_m(entry_m);
     table.add_entry(entry_ptr_m);
 
-    // sorts by priority 
+    // sorts by priority
     table.finalize();
-
+    
     // get rid of all entries that overlap with existing entries.
     table.filter_eclipsed();
 
     // see docstring at top of func declaration.
-    if (table.num_entries() == 6)
+    if (table.num_entries() == 5)
         return true;
     return false;
 }

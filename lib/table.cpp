@@ -78,5 +78,5 @@ void Table::add_entry(UniqueEntryPtr& entry_ptr)
 void Table::finalize()
 {
     std::sort(_entries.begin(), _entries.end(),
-        Entry::sort_unique_ptr_by_priority);
+        Entry::sort_unique_ptr_by_priority_descending);
 }
