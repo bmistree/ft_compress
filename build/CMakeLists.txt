@@ -1,5 +1,5 @@
 
-set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 
 set(TEST_FOLDER "../test/")
 set(LIB_FOLDER "../lib/")
