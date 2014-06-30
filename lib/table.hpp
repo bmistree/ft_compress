@@ -35,8 +35,11 @@ public:
        can delete lower priority entry.
      */
     void filter_eclipsed();
-
-    
+    /**
+       From all rules that have wildcards in this table, choose one at random
+       and split it into two largest rules that we can.
+     */
+    void split_random();
     
 private:
     TableId _id;

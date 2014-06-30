@@ -22,6 +22,14 @@ public:
     static bool sort_unique_ptr_by_priority_descending(
         const UniqueEntryPtr& a, const UniqueEntryPtr& b);
     void debug_print_entry() const;
+
+    /**
+      Only can be run on entries that have wildcard matches.  Splits this entry
+      into two largest entries can be split into.  Priority of split rule is
+      same.  
+     */
+    UniqueEntryPtr split_entry();
+
     
 private:
     int _priority;

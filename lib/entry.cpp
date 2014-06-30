@@ -1,8 +1,11 @@
 #include <memory>
-#include "entry.hpp"
-#include "header.hpp"
 #include <iostream>
 #include <iomanip>
+#include <cassert>
+
+#include "entry.hpp"
+#include "header.hpp"
+
 
 Entry::Entry(int priority,const Header& match)
  : _priority (priority),
@@ -17,6 +20,18 @@ Entry::~Entry()
         delete *iter;
     }
     _action_list.clear();
+}
+
+UniqueEntryPtr Entry::split_entry()
+{
+    // can only be run on header that has wildcard
+    if (! _match.has_wildcard())
+        assert(false);
+
+    Header split_header = _match.split_header();
+    Entry* split_entry = new Entry(_priority,split_header);
+    UniqueEntryPtr split_entry_ptr(split_entry);
+    return std::move(split_entry_ptr);
 }
 
 void Entry::debug_print_entry() const

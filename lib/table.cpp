@@ -1,9 +1,11 @@
-#include "table.hpp"
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
 #include <map>
 #include <cassert>
+#include <stdlib.h>
+
+#include "table.hpp"
 
 Table::Table()
 {
@@ -52,6 +54,32 @@ void Table::filter_eclipsed()
         _entries.erase( _entries.begin() + index_to_remove);
     }
 }
+
+void Table::split_random()
+{
+    // Grab random wildcard rule
+
+    // first, find all wildcard rules
+    std::vector<int> wildcard_rule_indices;
+    for (int i = 0; i < _entries.size(); ++i)
+    {
+        const Header& header = _entries[i]->match();
+        if (header.has_wildcard())
+            wildcard_rule_indices.push_back(i);
+    }
+
+    int wildcard_rule_indices_index = rand() % wildcard_rule_indices.size();
+    int wildcard_rule_index =
+        wildcard_rule_indices[wildcard_rule_indices_index];
+
+    // Split the wildcard rule and insert new entry for split.
+    UniqueEntryPtr new_entry = _entries[wildcard_rule_index]->split_entry();
+    // FIXME: this is gross, but can't figure out how to insert unique pointers.
+    //_entries.insert(wildcard_rule_index,std::move(new_entry));
+    _entries.push_back(std::move(new_entry));
+    finalize();
+}
+
 
 void Table::chain_tables(SharedTablePtr parent, SharedTablePtr child)
 {
