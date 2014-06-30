@@ -28,3 +28,7 @@ target_link_libraries(sort_table COMPRESS_LIB)
 project (header_superset)
 add_executable(header_superset "${TEST_FOLDER}/header_superset.cpp" ${LIB_HEADERS})
 target_link_libraries(header_superset COMPRESS_LIB)
+
+project (eclipse_filter)
+add_executable(eclipse_filter "${TEST_FOLDER}/eclipse_filter.cpp" ${LIB_HEADERS})
+target_link_libraries(eclipse_filter COMPRESS_LIB)
