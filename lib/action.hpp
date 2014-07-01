@@ -12,8 +12,11 @@ typedef ActionList::const_iterator ActionListCIter;
 class Action
 {
 public:
-    int action_type();
     virtual ~Action();
+    
+    int action_type() const;
+    virtual bool operator== (const Action& action) = 0;
+    
 private:
     int _action_type;
 protected:
@@ -26,6 +29,8 @@ public:
     DropAction();
     virtual ~DropAction();
     const static int DROP_ACTION_TYPE = 0;
+
+    virtual bool operator== (const Action& action);
 };
 
 class ForwardAction : public Action
@@ -34,6 +39,8 @@ public:
     ForwardAction();
     virtual ~ForwardAction();
     const static int FORWARD_ACTION_TYPE = 1;
+    
+    virtual bool operator== (const Action& action);
 };
 
 #endif

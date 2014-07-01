@@ -7,7 +7,7 @@ Action::Action(int act_type)
 Action::~Action()
 {}
 
-int Action::action_type()
+int Action::action_type() const
 {
     return _action_type;
 }
@@ -21,6 +21,11 @@ DropAction::DropAction()
 DropAction::~DropAction()
 {}
 
+bool DropAction::operator== (const Action& action)
+{
+    return action.action_type() == action_type();
+}
+
 /** ForwardAction */
 ForwardAction::ForwardAction()
  : Action(FORWARD_ACTION_TYPE)
@@ -28,3 +33,7 @@ ForwardAction::ForwardAction()
 ForwardAction::~ForwardAction()
 {}
 
+bool ForwardAction::operator== (const Action& action)
+{
+    return action.action_type() == action_type();
+}
