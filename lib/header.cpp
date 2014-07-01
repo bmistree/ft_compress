@@ -78,3 +78,22 @@ const std::string& Header::header_str() const
 {
     return _header_str;
 }
+
+void Header::merge_header(const Header& to_merge_with)
+{
+    // do not currently handle differently-sized headers.
+    if (to_merge_with._header_str.size() != _header_str.size())
+        assert(false);
+
+    for (int i = 0; i < _header_str.size(); ++i)
+    {
+        char my_char = _header_str[i];
+        // keep match any char
+        if (my_char == MATCH_ANY_CHAR)
+            continue;
+        
+        char their_char = to_merge_with._header_str[i];
+        if (my_char != their_char)
+            _header_str[i] = MATCH_ANY_CHAR;
+    }
+}

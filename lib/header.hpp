@@ -30,6 +30,11 @@ public:
        header.  Also, modifies this header to take the other half of the match.
      */
     Header split_header();
+
+    /**
+       Updates this header to be the union of this header and to_merge_with.
+     */
+    void merge_header(const Header& to_merge_with);
     
 private:
     std::string _header_str;

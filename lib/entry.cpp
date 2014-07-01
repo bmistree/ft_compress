@@ -68,7 +68,7 @@ void Entry::add_action(Action* action)
 
 void Entry::merge_into_me(const UniqueEntryPtr& to_merge_into_me)
 {
-    // FIXME: stub method, must finish.
+    _match.merge_header(to_merge_into_me->match());
 }
 
 bool Entry::can_merge(const UniqueEntryPtr& to_check) const
