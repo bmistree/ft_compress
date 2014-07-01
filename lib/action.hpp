@@ -3,25 +3,37 @@
 
 #include <vector>
 
-class Action
-{};
-
+class Action;
 typedef std::vector<Action*> ActionList;
 typedef ActionList::iterator ActionListIter;
 typedef ActionList::const_iterator ActionListCIter;
+
+
+class Action
+{
+public:
+    int action_type();
+    virtual ~Action();
+private:
+    int _action_type;
+protected:
+    Action(int act_type);
+};
 
 class DropAction : public Action
 {
 public:
     DropAction();
-    ~DropAction();
+    virtual ~DropAction();
+    const static int DROP_ACTION_TYPE = 0;
 };
 
 class ForwardAction : public Action
 {
 public:
     ForwardAction();
-    ~ForwardAction();
+    virtual ~ForwardAction();
+    const static int FORWARD_ACTION_TYPE = 1;
 };
 
 #endif
