@@ -42,6 +42,19 @@ public:
        @returns Returns true if has an entry to split.  false if do not.       
      */
     bool split_random();
+
+    /**
+       Try to merge two rules in table.  First, find set of all rules in table
+       that can be merged.  Then, select one pair of rules from this set
+       randomly and merge them.  Two rules can be merged iff:
+         1) They have equivalent action sets
+         2) They have the same priorities
+       Note on 2: this condition is sufficient, but not necessary.  When we
+       combine it with reprioritization action, we're set though.
+
+       @returns Returns true if there were entries to merge.  false otherwise.
+     */
+    bool merge_random();
     
 private:
     TableId _id;

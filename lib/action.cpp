@@ -11,6 +11,10 @@ int Action::action_type() const
 {
     return _action_type;
 }
+bool Action::operator!= (const Action& action)
+{
+    return ! ((*this) == action);
+}
 
 
 /** DropAction */

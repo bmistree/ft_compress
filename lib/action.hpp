@@ -4,6 +4,7 @@
 #include <vector>
 
 class Action;
+// FIXME: probably want to use unique pointers for actions here.
 typedef std::vector<Action*> ActionList;
 typedef ActionList::iterator ActionListIter;
 typedef ActionList::const_iterator ActionListCIter;
@@ -16,6 +17,7 @@ public:
     
     int action_type() const;
     virtual bool operator== (const Action& action) = 0;
+    bool operator!= (const Action& action);
     
 private:
     int _action_type;

@@ -65,3 +65,31 @@ void Entry::add_action(Action* action)
 {
     _action_list.push_back(action);
 }
+
+void Entry::merge_into_me(const UniqueEntryPtr& to_merge_into_me)
+{
+    // FIXME: stub method, must finish.
+}
+
+bool Entry::can_merge(const UniqueEntryPtr& to_check) const
+{
+    if (to_check->priority() != _priority)
+        return false;
+
+    // FIXME: can be a lot less conservative checking action list.  In
+    // particular, this requires that actions are in same order.  In reality,
+    // lots of actions can commute.  Similarly, may be able to merge rules that
+
+    if (_action_list.size() != to_check->_action_list.size())
+        return false;
+
+    for (int i = 0; i < _action_list.size(); ++i)
+    {
+        Action* my_action = _action_list[i];
+        const Action* to_check_action = to_check->_action_list[i];
+
+        if ( (*my_action) != (*to_check_action) )
+            return false;
+    }
+    return true;
+}

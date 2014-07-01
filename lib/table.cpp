@@ -84,6 +84,44 @@ bool Table::split_random()
     return true;
 }
 
+bool Table::merge_random()
+{
+    // FIXME: ugly n^2 algorithm for merging entries
+    std::vector<std::pair<int,int>> merge_indices;
+
+    for (int i=0; i < _entries.size(); ++i)
+    {
+        const UniqueEntryPtr& entry_i = _entries[i];
+        for (int j=i+1; j < _entries.size(); ++j)
+        {
+            const UniqueEntryPtr& entry_j = _entries[j];
+            if (entry_i->can_merge(entry_j))
+                merge_indices.push_back(std::pair<int,int>(i,j));
+        }
+    }
+
+    // no entries to merge
+    if (merge_indices.empty())
+        return false;
+
+    // choose random entry to merge
+    int rand_merge_indices_index = rand() % merge_indices.size();
+    // note: not necessary that this pair is const.  Just adding const because
+    // don't modify entry at all.
+    const std::pair<int,int>& entries_to_merge =
+        merge_indices[rand_merge_indices_index];
+
+    UniqueEntryPtr& to_merge_into = _entries[entries_to_merge.first];
+    UniqueEntryPtr& to_merge = _entries[entries_to_merge.second];
+
+    // update entry that's been merged
+    to_merge_into->merge_into_me(to_merge);
+    // remove old entry
+    _entries.erase(_entries.begin() + entries_to_merge.second);
+
+    // return that we actually performed the merge successfully.
+    return true;
+}
 
 void Table::chain_tables(SharedTablePtr parent, SharedTablePtr child)
 {

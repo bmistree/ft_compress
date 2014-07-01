@@ -30,6 +30,15 @@ public:
      */
     UniqueEntryPtr split_entry();
 
+    /**
+       Combines matches of this and to_merge_into_me.  Assumes that this and
+       to_merge_into_me are merge-able.  (@see merge_random in table.hpp.)
+     */
+    void merge_into_me(const UniqueEntryPtr& to_merge_into_me);
+    /**
+       @return Returns true if this can merge with to_check.  false otherwise.
+     */
+    bool can_merge(const UniqueEntryPtr& to_check) const;
     
 private:
     int _priority;
