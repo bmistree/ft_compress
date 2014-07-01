@@ -36,3 +36,7 @@ target_link_libraries(eclipse_filter COMPRESS_LIB)
 project (split_random)
 add_executable(split_random "${TEST_FOLDER}/split_random.cpp" ${LIB_HEADERS})
 target_link_libraries(split_random COMPRESS_LIB)
+
+project (merge_random)
+add_executable(merge_random "${TEST_FOLDER}/merge_random.cpp" ${LIB_HEADERS})
+target_link_libraries(merge_random COMPRESS_LIB)
