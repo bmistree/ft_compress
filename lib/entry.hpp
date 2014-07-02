@@ -6,6 +6,8 @@
 #include <vector>
 #include <memory>
 
+#define MAX_PRIORITY 32000
+
 class Entry;
 typedef std::unique_ptr<Entry> UniqueEntryPtr;
 

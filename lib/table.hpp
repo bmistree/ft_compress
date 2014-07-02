@@ -55,6 +55,11 @@ public:
        @returns Returns true if there were entries to merge.  false otherwise.
      */
     bool merge_random();
+
+    /**
+       Update the priority of a random rule either up or down.
+     */
+    bool priority_random();
     
 private:
     TableId _id;
@@ -63,6 +68,9 @@ private:
     EntryVec _entries;
     TablePtrSet _children;
     SharedTablePtr _parent;
+
+    void update_priority_up(int index_to_update);
+    void update_priority_down(int index_to_update);
 };
 
 

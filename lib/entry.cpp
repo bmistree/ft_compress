@@ -52,6 +52,11 @@ int Entry::priority() const
 }
 int Entry::priority(int new_priority)
 {
+    // FIXME: ensure that new_priority is not greater than max priority.
+    if (new_priority < 0)
+        new_priority = 0;
+    if (new_priority > MAX_PRIORITY)
+        new_priority = MAX_PRIORITY;
     _priority = new_priority;
     return _priority;
 }

@@ -84,6 +84,93 @@ bool Table::split_random()
     return true;
 }
 
+void Table::update_priority_up(int index_to_update)
+{
+    const UniqueEntryPtr& to_update = _entries[index_to_update];
+    
+    if (index_to_update == (_entries.size() -1))
+    {
+        // do not need to re-sort _entries vec: modifying last entry won't
+        // affect order
+        int current_priority = to_update->priority();
+        to_update->priority(current_priority + 1);
+        return;
+    }
+
+    int can_update_until_priority = -1;
+    for (int i = index_to_update+1; i<_entries.size(); ++i)
+    {
+        const UniqueEntryPtr& comparing = _entries[i];
+        if (to_update->match().is_subset_of(comparing->match()))
+        {
+            can_update_until_priority = comparing->priority();
+            break;
+        }
+    }
+
+    if (can_update_until_priority != -1)
+    {
+        int to_update_priority = to_update->priority();
+        int priority_delta = can_update_until_priority - to_update_priority;
+        int new_priority = to_update_priority + ( rand() % priority_delta);
+        to_update->priority(new_priority);        
+    }
+
+    // FIXME: re-sorting all instead of just moving one entry.
+    finalize();
+}
+
+void Table::update_priority_down(int index_to_update)
+{
+    const UniqueEntryPtr& to_update = _entries[index_to_update];
+    
+    if (index_to_update == 0)
+    {
+        // do not need to re-sort _entries vec: modifying first entry won't
+        // affect order
+        int current_priority = to_update->priority();
+        to_update->priority(current_priority - 1);
+        return;
+    }
+
+    int can_update_until_priority = -1;
+    for (int i = index_to_update-1; i>=0; --i)
+    {
+        const UniqueEntryPtr& comparing = _entries[i];
+        if (to_update->match().is_subset_of(comparing->match()))
+        {
+            can_update_until_priority = comparing->priority();
+            break;
+        }
+    }
+    
+    if (can_update_until_priority != -1)
+    {
+        int to_update_priority = to_update->priority();
+        int priority_delta = to_update_priority - can_update_until_priority;
+        int new_priority = to_update_priority - ( rand() % priority_delta);
+        to_update->priority(new_priority);        
+    }
+
+    // FIXME: re-sorting all instead of just moving one entry.
+    finalize();
+}
+
+
+bool Table::priority_random()
+{
+    if (_entries.empty())
+        return false;
+    int entry_to_update_index = rand() % _entries.size();
+    bool update_priority_up_b = ((rand() % 2) == 0);
+
+    if (update_priority_up_b)
+        update_priority_up(entry_to_update_index);
+    else
+        update_priority_down(entry_to_update_index);
+    return true;
+}
+
 bool Table::merge_random()
 {
     // FIXME: ugly n^2 algorithm for merging entries
