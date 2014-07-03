@@ -40,3 +40,7 @@ target_link_libraries(split_random COMPRESS_LIB)
 project (merge_random)
 add_executable(merge_random "${TEST_FOLDER}/merge_random.cpp" ${LIB_HEADERS})
 target_link_libraries(merge_random COMPRESS_LIB)
+
+project (priority_random)
+add_executable(priority_random "${TEST_FOLDER}/priority_random.cpp" ${LIB_HEADERS})
+target_link_libraries(priority_random COMPRESS_LIB)
