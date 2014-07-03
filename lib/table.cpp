@@ -96,7 +96,7 @@ void Table::update_priority_up(int index_to_update)
         to_update->priority(current_priority + 1);
         return;
     }
-
+        
     int can_update_until_priority = -1;
     for (int i = index_to_update+1; i<_entries.size(); ++i)
     {
@@ -163,7 +163,7 @@ bool Table::priority_random()
         return false;
     int entry_to_update_index = rand() % _entries.size();
     bool update_priority_up_b = ((rand() % 2) == 0);
-
+    
     if (update_priority_up_b)
         update_priority_up(entry_to_update_index);
     else
