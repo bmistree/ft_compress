@@ -2,6 +2,7 @@
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
 set(TEST_FOLDER "../test/")
+set(UTIL_FOLDER "../util/")
 set(LIB_FOLDER "../lib/")
 set(
   LIB_HEADERS
@@ -16,6 +17,15 @@ add_library(
   "${LIB_FOLDER}/header.cpp"
   "${LIB_FOLDER}/entry.cpp"
   "${LIB_FOLDER}/table.cpp")
+
+set(
+  UTIL_HEADERS
+  "${UTIL_FOLDER}/populate_random_table.hpp")
+
+add_library(
+  UTIL_LIB
+  "${UTIL_FOLDER}/populate_random_table.cpp")
+
 
 project (create_entries)
 add_executable(create_entries "${TEST_FOLDER}/create_entries.cpp" ${LIB_HEADERS})
@@ -44,3 +54,7 @@ target_link_libraries(merge_random COMPRESS_LIB)
 project (priority_random)
 add_executable(priority_random "${TEST_FOLDER}/priority_random.cpp" ${LIB_HEADERS})
 target_link_libraries(priority_random COMPRESS_LIB)
+
+project (table_random)
+add_executable(table_random "${TEST_FOLDER}/table_random.cpp" ${LIB_HEADERS} ${UTIL_HEADERS})
+target_link_libraries(table_random COMPRESS_LIB UTIL_LIB)
