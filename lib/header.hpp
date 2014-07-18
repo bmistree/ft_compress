@@ -14,6 +14,10 @@ class Header
 {
 public:
     Header(std::string header_str);
+    /**
+       Generates random header with given number of bits.
+     */
+    Header(int num_bits);
     ~Header();
     const std::string& header_str() const;
     bool has_wildcard() const;

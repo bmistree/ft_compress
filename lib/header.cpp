@@ -20,6 +20,31 @@ Header::Header(std::string header_str)
         }
     }
 }
+Header::Header(int num_bits)
+ : _header_str(""),
+   _has_wildcard(false)
+{
+    for (int i = 0; i < num_bits; ++i)
+    {
+        int which_char = rand() % 3;
+        switch (which_char)
+        {
+          case 0:
+            _header_str += '1';
+            break;
+          case 1:
+            _header_str += '0';
+            break;
+          case 2:
+            _header_str += MATCH_ANY_CHAR;
+            _has_wildcard = true;
+            break;
+          default:
+            assert(false);
+        }
+    }
+}
+
 Header::~Header()
 {}
 
