@@ -1,4 +1,5 @@
 #include "action.hpp"
+#include <stdlib.h>
 
 /** Action */
 Action::Action(int act_type)
@@ -6,6 +7,12 @@ Action::Action(int act_type)
 {}
 Action::~Action()
 {}
+
+UniqueActionPtr Action::generate_random_action()
+{
+    int which_action = rand() % _action_generator_map.size();
+    return std::move( _action_generator_map[which_action]());
+}
 
 int Action::action_type() const
 {
