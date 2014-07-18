@@ -14,11 +14,6 @@ Entry::Entry(int priority,const Header& match)
 
 Entry::~Entry()
 {
-    for (ActionListIter iter = _action_list.begin();
-         iter != _action_list.end(); ++iter)
-    {
-        delete *iter;
-    }
     _action_list.clear();
 }
 
@@ -66,9 +61,9 @@ const Header& Entry::match() const
     return _match;
 }
 
-void Entry::add_action(Action* action)
+void Entry::add_action(UniqueActionPtr& action)
 {
-    _action_list.push_back(action);
+    _action_list.push_back(std::move(action));
 }
 
 void Entry::merge_into_me(const UniqueEntryPtr& to_merge_into_me)
@@ -90,8 +85,8 @@ bool Entry::can_merge(const UniqueEntryPtr& to_check) const
 
     for (int i = 0; i < _action_list.size(); ++i)
     {
-        Action* my_action = _action_list[i];
-        const Action* to_check_action = to_check->_action_list[i];
+        const UniqueActionPtr& my_action = _action_list[i];
+        const UniqueActionPtr& to_check_action = to_check->_action_list[i];
 
         if ( (*my_action) != (*to_check_action) )
             return false;

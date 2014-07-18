@@ -2,13 +2,16 @@
 #define __ACTION_HPP__
 
 #include <vector>
+#include <memory>
 
 class Action;
+
+typedef std::unique_ptr<Action> UniqueActionPtr;
+
 // FIXME: probably want to use unique pointers for actions here.
-typedef std::vector<Action*> ActionList;
+typedef std::vector<UniqueActionPtr> ActionList;
 typedef ActionList::iterator ActionListIter;
 typedef ActionList::const_iterator ActionListCIter;
-
 
 
 
