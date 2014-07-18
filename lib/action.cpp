@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 /** Action */
-Action::Action(int act_type)
+Action::Action(ActionType act_type)
  : _action_type(act_type)
 {}
 Action::~Action()
@@ -14,7 +14,7 @@ UniqueActionPtr Action::generate_random_action()
     return std::move( _action_generator_map[which_action]());
 }
 
-int Action::action_type() const
+ActionType Action::action_type() const
 {
     return _action_type;
 }
@@ -26,7 +26,7 @@ bool Action::operator!= (const Action& action)
 
 /** DropAction */
 DropAction::DropAction()
- : Action(DROP_ACTION_TYPE)
+ : Action(ActionType::DROP_ACTION_TYPE)
 {}
 
 DropAction::~DropAction()
@@ -39,7 +39,7 @@ bool DropAction::operator== (const Action& action)
 
 /** ForwardAction */
 ForwardAction::ForwardAction()
- : Action(FORWARD_ACTION_TYPE)
+ : Action(ActionType::FORWARD_ACTION_TYPE)
 {}
 ForwardAction::~ForwardAction()
 {}

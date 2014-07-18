@@ -8,7 +8,7 @@
 class Action;
 typedef std::unique_ptr<Action> UniqueActionPtr;
 
-// FIXME: probably want to use unique pointers for actions here.
+
 typedef std::vector<UniqueActionPtr> ActionList;
 typedef ActionList::iterator ActionListIter;
 typedef ActionList::const_iterator ActionListCIter;
@@ -19,7 +19,8 @@ typedef ActionList::const_iterator ActionListCIter;
 typedef std::function<UniqueActionPtr()> ActionFactory;
 static std::unordered_map<int,ActionFactory> _action_generator_map;
 static int _action_counter = 0;
-template<class cls>
+
+template<class cls> // cls should be a subclass of Action
 static bool _register_action()
 {
     ActionFactory to_insert =
@@ -34,19 +35,25 @@ static bool _register_action()
     return true;
 }
 
+enum ActionType
+{
+    DROP_ACTION_TYPE,
+    FORWARD_ACTION_TYPE
+};
+
 
 class Action
 {
 public:
     virtual ~Action();
-    int action_type() const;
+    ActionType action_type() const;
     virtual bool operator== (const Action& action) = 0;
     bool operator!= (const Action& action);
     static UniqueActionPtr generate_random_action();
 private:
-    int _action_type;
+    ActionType _action_type;
 protected:
-    Action(int act_type);
+    Action(ActionType act_type);
 };
 
 class DropAction : public Action
@@ -54,8 +61,6 @@ class DropAction : public Action
 public:
     DropAction();
     virtual ~DropAction();
-    const static int DROP_ACTION_TYPE = 0;
-
     virtual bool operator== (const Action& action);
 };
 const static bool register_drop_action = _register_action<DropAction>();
@@ -65,8 +70,6 @@ class ForwardAction : public Action
 public:
     ForwardAction();
     virtual ~ForwardAction();
-    const static int FORWARD_ACTION_TYPE = 1;
-    
     virtual bool operator== (const Action& action);
 };
 const static bool register_forward_action = _register_action<ForwardAction>();
