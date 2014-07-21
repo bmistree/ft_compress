@@ -20,11 +20,13 @@ add_library(
 
 set(
   UTIL_HEADERS
-  "${UTIL_FOLDER}/populate_random_table.hpp")
+  "${UTIL_FOLDER}/populate_random_table.hpp"
+  "${UTIL_FOLDER}/cost_functions.hpp")
 
 add_library(
   UTIL_LIB
-  "${UTIL_FOLDER}/populate_random_table.cpp")
+  "${UTIL_FOLDER}/populate_random_table.cpp"
+  "${UTIL_FOLDER}/cost_functions.cpp")
 
 
 project (create_entries)

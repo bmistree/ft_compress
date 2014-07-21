@@ -11,7 +11,6 @@ class Table;
 typedef std::shared_ptr<Table> SharedTablePtr;
 typedef std::set<SharedTablePtr> TablePtrSet;
 
-
 class Table
 {
 public:
@@ -24,7 +23,6 @@ public:
     int num_entries() const;
     
     static void chain_tables(SharedTablePtr parent, SharedTablePtr child);
-
 
     /** Should really be private, but need for testing */
     
