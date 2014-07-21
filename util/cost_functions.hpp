@@ -8,7 +8,7 @@
 class CostFunction
 {
 public:
-    virtual float cost (const TablePtrSet& table_set) const = 0;
+    virtual float cost () const = 0;
 };
 
 typedef std::unique_ptr<CostFunction> UniqueCostFuncPtr;
@@ -17,7 +17,10 @@ typedef std::unique_ptr<CostFunction> UniqueCostFuncPtr;
 class TableSize
 {
 public:
-    virtual float cost (const TablePtrSet& table_set) const;
+    TableSize(const TablePtrSet& table_set);
+    virtual float cost () const;
+private:
+    const TablePtrSet& _table_set;
 };
 
 #endif
