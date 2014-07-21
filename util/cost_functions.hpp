@@ -5,22 +5,36 @@
 #include <set>
 #include "../lib/table.hpp"
 
+template <class T>
 class CostFunction
 {
 public:
-    virtual float cost () const = 0;
+    virtual float cost(const T& to_find_cost_of) const = 0;
 };
 
-typedef std::unique_ptr<CostFunction> UniqueCostFuncPtr;
-
-
-class TableSize
+template <class T>
+class CandidateProducer
 {
 public:
-    TableSize(const TablePtrSet& table_set);
-    virtual float cost () const;
-private:
-    const TablePtrSet& _table_set;
+    CandidateProducer(const CostFunction<T>& cf)
+     : _cost_function(cf)
+    {}
+    virtual ~CandidateProducer()
+    {}
+    
+    virtual float generate_candidate_get_cost() = 0;
+    virtual float cost_current() const = 0;
+    virtual void accept_candidate() = 0;
+protected:
+    const CostFunction<T>& _cost_function;
+};
+
+
+
+class TableSizeCostFunction : CostFunction<TablePtrSet>
+{
+public:
+    virtual float cost (const TablePtrSet& to_find_cost_of) const;
 };
 
 #endif
