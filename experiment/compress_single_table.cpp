@@ -7,13 +7,14 @@
 #include "../util/mcmc.hpp"
 
 #define NUM_ENTRIES_TO_POPULATE 10000
+#define NUM_HEADER_BITS 20
 #define ACCEPTANCE_PARAMETER .5
 
 int main(int argc, char**argv)
 {
     SharedTablePtr table( new Table());
     PopulateRandomTable::populate_random_table(
-        *table,NUM_ENTRIES_TO_POPULATE);
+        *table, NUM_ENTRIES_TO_POPULATE, NUM_HEADER_BITS);
     table->filter_eclipsed();
     TablePtrSet table_ptr_set;
     table_ptr_set.insert(table);
@@ -27,6 +28,8 @@ int main(int argc, char**argv)
     {
         mcmc.iterate();
         std::cout<<"\n\tCurrent table size: "<<table->num_entries();
+        if ((i % 10) == 0)
+            std::cout.flush();
     }
 
     return 0;
