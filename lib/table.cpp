@@ -80,7 +80,7 @@ void Table::filter_eclipsed()
 
     // iterating over backwards so that remove entries backwards to forwards in
     // entries.  That way, do not have to readjust removal indices.
-    for (std::map<int,bool>::reverse_iterator riter = index_to_remove_from.rbegin();
+    for (auto riter = index_to_remove_from.rbegin();
          riter != index_to_remove_from.rend(); ++riter)
     {
         int index_to_remove = riter->first;
