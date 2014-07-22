@@ -43,6 +43,7 @@ public:
        @return Returns true if this can merge with to_check.  false otherwise.
      */
     bool can_merge(const UniqueEntryPtr& to_check) const;
+    bool compare_actions(const UniqueEntryPtr& to_check) const;
     
 private:
     int _priority;

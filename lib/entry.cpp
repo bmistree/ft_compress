@@ -81,13 +81,17 @@ bool Entry::can_merge(const UniqueEntryPtr& to_check) const
     if (to_check->priority() != _priority)
         return false;
 
+    return compare_actions(to_check);
+}
+
+bool Entry::compare_actions(const UniqueEntryPtr& to_check) const
+{
     // FIXME: can be a lot less conservative checking action list.  In
     // particular, this requires that actions are in same order.  In reality,
     // lots of actions can commute.  Similarly, may be able to merge rules that
-
     if (_action_list.size() != to_check->_action_list.size())
         return false;
-
+    
     for (int i = 0; i < _action_list.size(); ++i)
     {
         const UniqueActionPtr& my_action = _action_list[i];

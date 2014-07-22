@@ -146,6 +146,13 @@ void Table::update_priority_up(int index_to_update)
         if (to_update->match().intersects(comparing->match()))
         {
             can_update_until_priority = comparing->priority();
+            // makes update inclusive of this priority: allows us to potentially
+            // update all the way to comparing's priority, not just up until
+            // comparing's priority+1.  This is okay iff comparing and to_update
+            // can be merged (ie, they have the same action set).
+            if (comparing->compare_actions(to_update))
+                can_update_until_priority += 1;
+            
             break;
         }
     }
@@ -193,6 +200,12 @@ void Table::update_priority_down(int index_to_update)
         if (to_update->match().intersects(comparing->match()))
         {
             can_update_until_priority = comparing->priority();
+            // makes update inclusive of this priority: allows us to potentially
+            // update all the way to comparing's priority, not just up until
+            // comparing's priority-1.  This is okay iff comparing and to_update
+            // can be merged (ie, they have the same action set).
+            if (comparing->compare_actions(to_update))
+                can_update_until_priority -= 1;
             break;
         }
     }
@@ -254,7 +267,7 @@ bool Table::merge_random()
                 merge_indices.push_back(std::pair<int,int>(i,j));
         }
     }
-
+    
     // no entries to merge
     if (merge_indices.empty())
     {

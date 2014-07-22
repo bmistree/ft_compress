@@ -1,5 +1,6 @@
 #include <vector>
 #include <memory>
+#include <iostream>
 
 #include "perturbation_undoer.hpp"
 #include "table.hpp"
@@ -41,6 +42,10 @@ MergeRandomUndoer::~MergeRandomUndoer()
 
 void MergeRandomUndoer::undo()
 {
+    // FIXME: See below
+    std::cout<<"\nFIXME: may still need to re-add ";
+    std::cout<<"all entries that got finalized out.\n";
+    
     _entries[_entry_still_there_index]->set_header(
         _entry_still_there_old_header);
     _entries.insert(
