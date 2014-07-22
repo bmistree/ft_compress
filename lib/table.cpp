@@ -258,7 +258,7 @@ bool Table::merge_random()
     // note: important that merge into smaller index so that undoer inserts
     // correctly later.
     UniqueEntryPtr& to_merge_into = _entries[entries_to_merge.first];
-    UniqueEntryPtr& to_merge = _entries[entries_to_merge.second];
+    UniqueEntryPtr to_merge = std::move(_entries[entries_to_merge.second]);
     // finding this before the merge so that get previous value.
     Header previous_match = to_merge_into->match();
     
@@ -266,7 +266,7 @@ bool Table::merge_random()
     to_merge_into->merge_into_me(to_merge);
     // remove old entry
     _entries.erase(_entries.begin() + entries_to_merge.second);
-
+    
     _last_perturbation_undoer.reset(
         new MergeRandomUndoer(
             _entries,entries_to_merge.first,
