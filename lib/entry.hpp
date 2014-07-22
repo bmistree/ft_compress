@@ -25,6 +25,8 @@ public:
         const UniqueEntryPtr& a, const UniqueEntryPtr& b);
     void debug_print_entry() const;
 
+    void set_header(const Header& new_header);
+    
     /**
       Only can be run on entries that have wildcard matches.  Splits this entry
       into two largest entries can be split into.  Priority of split rule is

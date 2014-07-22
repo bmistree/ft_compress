@@ -1,5 +1,10 @@
+#include <vector>
+#include <memory>
+
 #include "perturbation_undoer.hpp"
 
+
+/** SplitRandomUndoer */
 SplitRandomUndoer::SplitRandomUndoer(EntryVec& entries, int old_entry_index)
  : _entries(entries),
    _old_entry_index(old_entry_index)
@@ -8,7 +13,7 @@ SplitRandomUndoer::SplitRandomUndoer(EntryVec& entries, int old_entry_index)
 SplitRandomUndoer::~SplitRandomUndoer()
 {}
 
-void SplitRandomUndoer::undo() const
+void SplitRandomUndoer::undo()
 {
     UniqueEntryPtr& old_entry = _entries[_old_entry_index];
     UniqueEntryPtr& new_entry = _entries[_old_entry_index + 1];
@@ -17,4 +22,28 @@ void SplitRandomUndoer::undo() const
     old_entry->merge_into_me(new_entry);
     // remove former new_entry
     _entries.erase(_entries.begin() + _old_entry_index + 1);
+}
+
+
+/** MergeRandomUndoer */
+
+MergeRandomUndoer::MergeRandomUndoer(
+    EntryVec& entries,int entry_still_there_index,
+    Header entry_still_there_old_header,UniqueEntryPtr removed_entry)
+ : _entries(entries),
+   _entry_still_there_index(entry_still_there_index),
+   _entry_still_there_old_header(entry_still_there_old_header),
+   _removed_entry(std::move(removed_entry))
+{}
+
+MergeRandomUndoer::~MergeRandomUndoer()
+{}
+
+void MergeRandomUndoer::undo()
+{
+    _entries[_entry_still_there_index]->set_header(
+        _entry_still_there_old_header);
+    _entries.insert(
+        _entries.begin() + _entry_still_there_index + 1,
+        std::move(_removed_entry));
 }

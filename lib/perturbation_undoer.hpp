@@ -10,7 +10,7 @@ typedef std::unique_ptr<PerturbationUndoer> UniquePerturbationUndoerPtr;
 class PerturbationUndoer
 {
 public:
-    virtual void undo() const = 0;
+    virtual void undo() = 0;
 };
 
 /**
@@ -19,7 +19,7 @@ public:
 class EmptyUndoer : public PerturbationUndoer
 {
 public:
-    virtual void undo() const
+    virtual void undo()
     {}
 };
 
@@ -36,11 +36,40 @@ public:
     */
     SplitRandomUndoer(EntryVec& entries,int old_entry_index);
     ~SplitRandomUndoer();
-    virtual void undo() const;
+    virtual void undo();
     
 private:
     EntryVec& _entries;
     int _old_entry_index;
 };
+
+class MergeRandomUndoer : public PerturbationUndoer
+{
+public:
+    /**
+       @param entries --- reference to entries held by actual table.
+       
+       @param entry_still_there_index --- The position of the new combined
+       entry.
+
+       @param entry_still_there_old_header --- The header for the old entry that
+       was merged into.
+
+       @param removed_entry --- The entry that was removed during merge.
+    */
+    MergeRandomUndoer(
+        EntryVec& entries,int entry_still_there_index,
+        Header entry_still_there_old_header,
+        UniqueEntryPtr removed_entry);
+    ~MergeRandomUndoer();
+    virtual void undo();
+    
+private:
+    EntryVec& _entries;
+    int _entry_still_there_index;
+    Header _entry_still_there_old_header;
+    UniqueEntryPtr _removed_entry;
+};
+
 
 #endif

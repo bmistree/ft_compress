@@ -29,6 +29,11 @@ UniqueEntryPtr Entry::split_entry()
     return std::move(split_entry_ptr);
 }
 
+void Entry::set_header(const Header& new_header)
+{
+    _match = new_header;
+}
+
 void Entry::debug_print_entry() const
 {
     std::cout<<"\tpriority: "<<_priority<<"\n";
