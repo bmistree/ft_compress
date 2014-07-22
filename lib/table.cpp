@@ -73,14 +73,6 @@ void Table::filter_eclipsed()
         for(int j = i+1; j != _entries.size();++j)
         {
             const UniqueEntryPtr& j_entry = _entries[j];
-
-            if (! j_entry)
-            {
-                std::cout<<"\nFor some reason have invalid entry\n";
-                assert(false);
-            }
-            
-            
             if (j_entry->match().is_subset_of(i_entry->match()))
                 index_to_remove_from[j] = true;
         }
@@ -161,6 +153,9 @@ void Table::update_priority_up(int index_to_update)
         int to_update_priority = to_update->priority();
         int priority_delta = can_update_until_priority - to_update_priority;
         int new_priority = to_update_priority + ( rand() % priority_delta);
+        if (new_priority == can_update_until_priority)
+            assert(false);
+        
         to_update->priority(new_priority);        
     }
 
@@ -197,6 +192,9 @@ void Table::update_priority_down(int index_to_update)
         int to_update_priority = to_update->priority();
         int priority_delta = to_update_priority - can_update_until_priority;
         int new_priority = to_update_priority - ( rand() % priority_delta);
+        if (new_priority == can_update_until_priority)
+            assert(false);        
+        
         to_update->priority(new_priority);        
     }
 
