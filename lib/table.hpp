@@ -4,12 +4,14 @@
 #include <set>
 
 #include "entry.hpp"
+#include "perturbation_undoer.hpp"
 
 typedef int TableId;
 
 class Table;
 typedef std::shared_ptr<Table> SharedTablePtr;
 typedef std::set<SharedTablePtr> TablePtrSet;
+typedef TablePtrSet::const_iterator TablePtrSetCIter;
 
 class Table
 {
@@ -24,6 +26,14 @@ public:
     
     static void chain_tables(SharedTablePtr parent, SharedTablePtr child);
 
+    /**
+       Select one of the actions to perform on this table and do so.  Save state
+       before this action so that can return to it if get call to
+       undo_last_perturbation.
+     */
+    void perturb();
+    void undo_last_perturbation();
+    
     /** Should really be private, but need for testing */
     
     /**
@@ -66,7 +76,8 @@ private:
     EntryVec _entries;
     TablePtrSet _children;
     SharedTablePtr _parent;
-
+    UniquePerturbationUndoerPtr _last_perturbation_undoer;
+    
     void update_priority_up(int index_to_update);
     void update_priority_down(int index_to_update);
 };

@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include "table.hpp"
+#include "perturbation_undoer.hpp"
 
 Table::Table()
 {
@@ -25,6 +26,35 @@ int Table::num_entries() const
 {
     return _entries.size();
 }
+
+void Table::perturb()
+{
+    // FIXME: this is a gross way of selecting perturbation to perform
+    int which_perturb = rand() % 3;
+    switch (which_perturb)
+    {
+      case 0:
+        split_random();
+      case 1:
+        merge_random();
+      case 2:
+        priority_random();
+      default:
+        assert (false);
+    }
+}
+
+void Table::undo_last_perturbation()
+{
+    // should already have perturbed before entering.
+    if (! _last_perturbation_undoer)
+        assert(false);
+
+    _last_perturbation_undoer->undo();
+    // resets pointer to undoer.
+    _last_perturbation_undoer.reset(nullptr);
+}
+
 
 void Table::filter_eclipsed()
 {
@@ -69,7 +99,11 @@ bool Table::split_random()
     }
 
     if (wildcard_rule_indices.empty())
+    {
+        // do no op on undo
+        _last_perturbation_undoer.reset(new EmptyUndoer());
         return false;
+    }
     
     int wildcard_rule_indices_index = rand() % wildcard_rule_indices.size();
     int wildcard_rule_index =
@@ -81,6 +115,11 @@ bool Table::split_random()
     //_entries.insert(wildcard_rule_index,std::move(new_entry));
     _entries.push_back(std::move(new_entry));
     finalize();
+
+
+    _last_perturbation_undoer.reset(
+        new SplitRandomUndoer(_entries,wildcard_rule_index));
+    
     return true;
 }
 
@@ -163,11 +202,17 @@ bool Table::priority_random()
         return false;
     int entry_to_update_index = rand() % _entries.size();
     bool update_priority_up_b = ((rand() % 2) == 0);
+
+    UniqueEntryPtr& to_update = _entries[entry_to_update_index];
+    int previous_priority = to_update->priority();
     
     if (update_priority_up_b)
         update_priority_up(entry_to_update_index);
     else
         update_priority_down(entry_to_update_index);
+
+    _last_perturbation_undoer.reset(
+        new PriorityRandomUndoer(this,to_update,previous_priority));
     return true;
 }
 
@@ -189,7 +234,10 @@ bool Table::merge_random()
 
     // no entries to merge
     if (merge_indices.empty())
+    {
+        _last_perturbation_undoer.reset(new EmptyUndoer());
         return false;
+    }
 
     // choose random entry to merge
     int rand_merge_indices_index = rand() % merge_indices.size();
@@ -198,14 +246,23 @@ bool Table::merge_random()
     const std::pair<int,int>& entries_to_merge =
         merge_indices[rand_merge_indices_index];
 
+    // note: important that merge into smaller index so that undoer inserts
+    // correctly later.
     UniqueEntryPtr& to_merge_into = _entries[entries_to_merge.first];
     UniqueEntryPtr& to_merge = _entries[entries_to_merge.second];
-
+    // finding this before the merge so that get previous value.
+    Header previous_match = to_merge_into->match();
+    
     // update entry that's been merged
     to_merge_into->merge_into_me(to_merge);
     // remove old entry
     _entries.erase(_entries.begin() + entries_to_merge.second);
 
+    _last_perturbation_undoer.reset(
+        new MergeRandomUndoer(
+            _entries,entries_to_merge.first,
+            previous_match,std::move(to_merge)));
+    
     // return that we actually performed the merge successfully.
     return true;
 }

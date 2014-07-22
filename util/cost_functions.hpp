@@ -24,7 +24,9 @@ public:
     
     virtual float generate_candidate_get_cost() = 0;
     virtual float cost_current() const = 0;
+    virtual void reject_candidate() = 0;
     virtual void accept_candidate() = 0;
+    
 protected:
     const CostFunction<T>& _cost_function;
 };
@@ -35,6 +37,27 @@ class TableSizeCostFunction : CostFunction<TablePtrSet>
 {
 public:
     virtual float cost (const TablePtrSet& to_find_cost_of) const;
+};
+
+class TableSizeCandidateProducer : CandidateProducer<TablePtrSet>
+{
+public:
+    TableSizeCandidateProducer(
+        const TablePtrSet& table_ptr_set,
+        const CostFunction<TablePtrSet>& cost_function);
+    ~TableSizeCandidateProducer();
+
+    virtual float generate_candidate_get_cost();
+    virtual float cost_current() const;
+    virtual void reject_candidate();
+    virtual void accept_candidate();
+    
+private:
+    const TablePtrSet& _table_ptr_set;
+    float _cost_current;
+
+    TablePtrSetCIter _candidate;
+    float _candidate_cost;
 };
 
 #endif

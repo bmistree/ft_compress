@@ -1,5 +1,4 @@
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
 set(TEST_FOLDER "../test/")
 set(UTIL_FOLDER "../util/")
@@ -9,14 +8,16 @@ set(
   "${LIB_FOLDER}/action.hpp"
   "${LIB_FOLDER}/header.hpp"
   "${LIB_FOLDER}/entry.hpp"
-  "${LIB_FOLDER}/table.hpp")
+  "${LIB_FOLDER}/table.hpp"
+  "${LIB_FOLDER}/perturbation_undoer.hpp")
 
 add_library(
   COMPRESS_LIB
   "${LIB_FOLDER}/action.cpp"
   "${LIB_FOLDER}/header.cpp"
   "${LIB_FOLDER}/entry.cpp"
-  "${LIB_FOLDER}/table.cpp")
+  "${LIB_FOLDER}/table.cpp"
+  "${LIB_FOLDER}/perturbation_undoer.cpp")
 
 set(
   UTIL_HEADERS
