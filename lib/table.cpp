@@ -141,7 +141,7 @@ void Table::update_priority_up(int index_to_update)
     for (int i = index_to_update+1; i<_entries.size(); ++i)
     {
         const UniqueEntryPtr& comparing = _entries[i];
-        if (to_update->match().is_subset_of(comparing->match()))
+        if (to_update->match().intersects(comparing->match()))
         {
             can_update_until_priority = comparing->priority();
             break;
@@ -180,7 +180,7 @@ void Table::update_priority_down(int index_to_update)
     for (int i = index_to_update-1; i>=0; --i)
     {
         const UniqueEntryPtr& comparing = _entries[i];
-        if (to_update->match().is_subset_of(comparing->match()))
+        if (to_update->match().intersects(comparing->match()))
         {
             can_update_until_priority = comparing->priority();
             break;
