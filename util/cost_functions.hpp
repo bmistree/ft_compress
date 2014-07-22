@@ -33,18 +33,18 @@ protected:
 
 
 
-class TableSizeCostFunction : CostFunction<TablePtrSet>
+class TableSizeCostFunction : public CostFunction<TablePtrSet>
 {
 public:
     virtual float cost (const TablePtrSet& to_find_cost_of) const;
 };
 
-class TableSizeCandidateProducer : CandidateProducer<TablePtrSet>
+class TableSizeCandidateProducer : public CandidateProducer<TablePtrSet>
 {
 public:
     TableSizeCandidateProducer(
         const TablePtrSet& table_ptr_set,
-        const CostFunction<TablePtrSet>& cost_function);
+        const TableSizeCostFunction& cost_function);
     ~TableSizeCandidateProducer();
 
     virtual float generate_candidate_get_cost();

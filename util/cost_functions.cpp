@@ -21,7 +21,8 @@ float TableSizeCostFunction::cost (const TablePtrSet& table_set) const
 
 TableSizeCandidateProducer::TableSizeCandidateProducer(
     const TablePtrSet& table_ptr_set,
-    const CostFunction<TablePtrSet>& cost_function)
+    const TableSizeCostFunction& cost_function)
+ 
  : CandidateProducer<TablePtrSet>(cost_function),
    _table_ptr_set(table_ptr_set),
    _cost_current(cost_function.cost(table_ptr_set))

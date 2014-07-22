@@ -3,6 +3,7 @@ set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
 set(TEST_FOLDER "../test/")
 set(UTIL_FOLDER "../util/")
 set(LIB_FOLDER "../lib/")
+set(EXPERIMENT_FOLDER "../experiment/")
 set(
   LIB_HEADERS
   "${LIB_FOLDER}/action.hpp"
@@ -61,3 +62,7 @@ target_link_libraries(priority_random COMPRESS_LIB)
 project (table_random)
 add_executable(table_random "${TEST_FOLDER}/table_random.cpp" ${LIB_HEADERS} ${UTIL_HEADERS})
 target_link_libraries(table_random COMPRESS_LIB UTIL_LIB)
+
+project (compress_single_table)
+add_executable(compress_single_table "${EXPERIMENT_FOLDER}/compress_single_table.cpp" ${LIB_HEADERS} ${UTIL_HEADERS})
+target_link_libraries(compress_single_table COMPRESS_LIB UTIL_LIB)
