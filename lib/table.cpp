@@ -37,10 +37,10 @@ void Table::perturb()
         split_random();
         break;
       case 1:
-        merge_random();
+        priority_random();
         break;
       case 2:
-        priority_random();
+        merge_random();
         break;
       default:
         assert (false);
@@ -73,6 +73,14 @@ void Table::filter_eclipsed()
         for(int j = i+1; j != _entries.size();++j)
         {
             const UniqueEntryPtr& j_entry = _entries[j];
+
+            if (! j_entry)
+            {
+                std::cout<<"\nFor some reason have invalid entry\n";
+                assert(false);
+            }
+            
+            
             if (j_entry->match().is_subset_of(i_entry->match()))
                 index_to_remove_from[j] = true;
         }
@@ -114,12 +122,10 @@ bool Table::split_random()
 
     // Split the wildcard rule and insert new entry for split.
     UniqueEntryPtr new_entry = _entries[wildcard_rule_index]->split_entry();
-    // FIXME: this is gross, but can't figure out how to insert unique pointers.
-    //_entries.insert(wildcard_rule_index,std::move(new_entry));
-    _entries.push_back(std::move(new_entry));
-    finalize();
-
-
+    _entries.insert(
+        _entries.begin() + wildcard_rule_index,
+        std::move(new_entry));
+    
     _last_perturbation_undoer.reset(
         new SplitRandomUndoer(_entries,wildcard_rule_index));
     

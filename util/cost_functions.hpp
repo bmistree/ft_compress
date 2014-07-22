@@ -55,7 +55,6 @@ public:
 private:
     const TablePtrSet& _table_ptr_set;
     float _cost_current;
-
     TablePtrSetCIter _candidate;
     float _candidate_cost;
 };

@@ -48,9 +48,7 @@ public:
                 _candidate_producer.accept_candidate();
             }
             else
-            {
                 _candidate_producer.reject_candidate();
-            }
         }
     }
     

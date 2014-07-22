@@ -57,7 +57,7 @@ void TableSizeCandidateProducer::reject_candidate()
 
 void TableSizeCandidateProducer::accept_candidate()
 {
-    (*_candidate)->filter_eclipsed();
     _cost_current = _candidate_cost;
+    (*_candidate)->filter_eclipsed();
 }
 
