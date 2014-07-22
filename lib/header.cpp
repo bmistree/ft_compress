@@ -51,10 +51,25 @@ Header::~Header()
 
 bool Header::intersects(const Header& h) const
 {
-    // if two headers intersect, either one is a subset of the other or vice
-    // versa.
-    return is_subset_of(h) || (h.is_subset_of(*this));
+    if (h._header_str.size() != _header_str.size())
+        assert(false);
+    
+    for (size_t i =0; i < h._header_str.size(); ++i)
+    {
+        char h_char = h._header_str[i];
+        if (h_char == MATCH_ANY_CHAR)
+            continue;
+
+        char m_char = _header_str[i];
+        if (m_char == MATCH_ANY_CHAR)
+            continue;
+        
+        if (m_char != h_char)
+            return false;
+    }
+    return true;
 }
+
 
 bool Header::has_wildcard() const
 {
