@@ -35,10 +35,13 @@ void Table::perturb()
     {
       case 0:
         split_random();
+        break;
       case 1:
         merge_random();
+        break;
       case 2:
         priority_random();
+        break;
       default:
         assert (false);
     }
