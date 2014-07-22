@@ -48,6 +48,14 @@ Header::Header(int num_bits)
 Header::~Header()
 {}
 
+
+bool Header::intersects(const Header& h) const
+{
+    // if two headers intersect, either one is a subset of the other or vice
+    // versa.
+    return is_subset_of(h) || (h.is_subset_of(*this));
+}
+
 bool Header::has_wildcard() const
 {
     return _has_wildcard;

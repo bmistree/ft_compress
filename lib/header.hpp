@@ -23,10 +23,16 @@ public:
     bool has_wildcard() const;
     
     /**
-       @returns Returns true if h is a superset of this.  False otherwise.
+       @returns Returns true if h is a superset of this.  false otherwise.
      */
     bool is_subset_of(const Header& h) const;
 
+    /**
+       @returns Returns true if this header intersects with other header.  false
+       otherwise.
+     */
+    bool intersects(const Header& h) const;
+    
     /**
        Can only be called on a header that has a wildcard.
        

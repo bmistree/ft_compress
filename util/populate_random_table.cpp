@@ -62,11 +62,8 @@ void PopulateRandomTable::populate_random_table(
         {
             UniqueEntryPtr& entry_ptr = *vec_iter;
             const Header& vec_header = entry_ptr->match();
-            if (vec_header.is_subset_of(to_add_header) ||
-                to_add_header.is_subset_of(vec_header))
-            {
+            if (vec_header.intersects(to_add_header))
                 continue;
-            }
         }
 
         same_priorities_vec.push_back(std::move(to_add));
