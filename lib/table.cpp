@@ -126,17 +126,66 @@ bool Table::split_random()
 
 void Table::update_priority_up(int index_to_update)
 {
+    // higher priorities are closer to zero
+    
     const UniqueEntryPtr& to_update = _entries[index_to_update];
     
-    if (index_to_update == (_entries.size() -1))
+    if (index_to_update == 0)
     {
-        // do not need to re-sort _entries vec: modifying last entry won't
+        // do not need to re-sort _entries vec: modifying first entry won't
         // affect order
         int current_priority = to_update->priority();
         to_update->priority(current_priority + 1);
         return;
     }
         
+    int can_update_until_priority = -1;
+    for (int i = index_to_update-1; i >= 0; --i)
+    {
+        const UniqueEntryPtr& comparing = _entries[i];
+        if (to_update->match().intersects(comparing->match()))
+        {
+            can_update_until_priority = comparing->priority();
+            break;
+        }
+    }
+
+    int to_update_priority = to_update->priority();
+    if (can_update_until_priority != -1)
+    {
+        int priority_delta = can_update_until_priority - to_update_priority;
+        int new_priority = to_update_priority + ( rand() % priority_delta);
+        if (new_priority == can_update_until_priority)
+            assert(false);
+        
+        to_update->priority(new_priority);        
+    }
+    else
+    {
+        // FIXME : no limit to how high can update priority.  just increment by
+        // 1.  Check that this still satisfies ergodicity.
+        to_update->priority(to_update_priority + 1);
+    }
+
+    // FIXME: re-sorting all instead of just moving one entry.
+    finalize();
+}
+
+void Table::update_priority_down(int index_to_update)
+{
+    // higher priorities are closer to zero
+    
+    const UniqueEntryPtr& to_update = _entries[index_to_update];
+    
+    if (index_to_update == (_entries.size() -1))
+    {
+        // do not need to re-sort _entries vec: modifying first entry won't
+        // affect order
+        int current_priority = to_update->priority();
+        to_update->priority(current_priority - 1);
+        return;
+    }
+
     int can_update_until_priority = -1;
     for (int i = index_to_update+1; i<_entries.size(); ++i)
     {
@@ -148,54 +197,21 @@ void Table::update_priority_up(int index_to_update)
         }
     }
 
+    int to_update_priority = to_update->priority();
     if (can_update_until_priority != -1)
     {
-        int to_update_priority = to_update->priority();
-        int priority_delta = can_update_until_priority - to_update_priority;
-        int new_priority = to_update_priority + ( rand() % priority_delta);
-        if (new_priority == can_update_until_priority)
-            assert(false);
-        
-        to_update->priority(new_priority);        
-    }
-
-    // FIXME: re-sorting all instead of just moving one entry.
-    finalize();
-}
-
-void Table::update_priority_down(int index_to_update)
-{
-    const UniqueEntryPtr& to_update = _entries[index_to_update];
-    
-    if (index_to_update == 0)
-    {
-        // do not need to re-sort _entries vec: modifying first entry won't
-        // affect order
-        int current_priority = to_update->priority();
-        to_update->priority(current_priority - 1);
-        return;
-    }
-
-    int can_update_until_priority = -1;
-    for (int i = index_to_update-1; i>=0; --i)
-    {
-        const UniqueEntryPtr& comparing = _entries[i];
-        if (to_update->match().intersects(comparing->match()))
-        {
-            can_update_until_priority = comparing->priority();
-            break;
-        }
-    }
-    
-    if (can_update_until_priority != -1)
-    {
-        int to_update_priority = to_update->priority();
         int priority_delta = to_update_priority - can_update_until_priority;
         int new_priority = to_update_priority - ( rand() % priority_delta);
         if (new_priority == can_update_until_priority)
             assert(false);        
         
         to_update->priority(new_priority);        
+    }
+    else
+    {
+        // FIXME : no limit to how high can update priority.  just decrement by
+        // 1.  Check that this still satisfies ergodicity.
+        to_update->priority(to_update_priority - 1);
     }
 
     // FIXME: re-sorting all instead of just moving one entry.
