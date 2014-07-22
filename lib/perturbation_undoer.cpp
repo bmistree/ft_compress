@@ -62,5 +62,6 @@ PriorityRandomUndoer::~PriorityRandomUndoer()
 void PriorityRandomUndoer::undo()
 {
     _entry->priority(_old_priority);
+    // FIXME: expensive to undo this operation.
     _table->finalize();
 }

@@ -18,6 +18,7 @@ int main(int argc, char**argv)
     SharedTablePtr table( new Table());
     PopulateRandomTable::populate_random_table(
         *table, NUM_ENTRIES_TO_POPULATE, action_params,NUM_HEADER_BITS);
+    
     table->filter_eclipsed();
     TablePtrSet table_ptr_set;
     table_ptr_set.insert(table);

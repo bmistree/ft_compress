@@ -80,4 +80,7 @@ void PopulateRandomTable::populate_random_table(
             table.add_entry(*vec_iter);
         }
     }
+
+    // sort by priorities.
+    table.finalize();
 }
