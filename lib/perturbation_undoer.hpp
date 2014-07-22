@@ -4,6 +4,7 @@
 #include <memory>
 #include "entry.hpp"
 
+
 class PerturbationUndoer;
 typedef std::unique_ptr<PerturbationUndoer> UniquePerturbationUndoerPtr;
 
@@ -69,6 +70,24 @@ private:
     int _entry_still_there_index;
     Header _entry_still_there_old_header;
     UniqueEntryPtr _removed_entry;
+};
+
+
+class Table;
+class PriorityRandomUndoer : public PerturbationUndoer
+{
+public:
+    // table is borrowed, do not delete
+    PriorityRandomUndoer(
+        Table* table, UniqueEntryPtr& entry, int old_priority);
+    ~PriorityRandomUndoer();
+    virtual void undo();
+    
+private:
+    // borrowed, do not delete
+    Table* _table;
+    UniqueEntryPtr& _entry;
+    int _old_priority;
 };
 
 

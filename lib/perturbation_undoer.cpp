@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "perturbation_undoer.hpp"
-
+#include "table.hpp"
 
 /** SplitRandomUndoer */
 SplitRandomUndoer::SplitRandomUndoer(EntryVec& entries, int old_entry_index)
@@ -46,4 +46,21 @@ void MergeRandomUndoer::undo()
     _entries.insert(
         _entries.begin() + _entry_still_there_index + 1,
         std::move(_removed_entry));
+}
+
+/** PriorityRandomUndoer */
+
+PriorityRandomUndoer::PriorityRandomUndoer(
+    Table* table, UniqueEntryPtr& entry, int old_priority)
+ : _table(table),
+   _entry(entry),
+   _old_priority(old_priority)
+{}
+PriorityRandomUndoer::~PriorityRandomUndoer()
+{}
+
+void PriorityRandomUndoer::undo()
+{
+    _entry->priority(_old_priority);
+    _table->finalize();
 }
