@@ -13,10 +13,18 @@ typedef std::vector<UniqueActionPtr> ActionList;
 typedef ActionList::iterator ActionListIter;
 typedef ActionList::const_iterator ActionListCIter;
 
+struct GeneralActionConstructionParameters
+{
+    int num_ports;
+};
+
+
+
 /**
    Keeps track of all actions.  Used to generate random actions.
  */
-typedef std::function<UniqueActionPtr()> ActionFactory;
+typedef std::function<
+    UniqueActionPtr(const GeneralActionConstructionParameters&)> ActionFactory;
 static std::unordered_map<int,ActionFactory> _action_generator_map;
 static int _action_counter = 0;
 
@@ -25,10 +33,11 @@ static bool _register_action()
 {
     ActionFactory to_insert =
         [ /* captures no variables from external scope */]
-        ( /* takes no arguments*/)
+        ( const GeneralActionConstructionParameters& params)
+        //( /* takes no arguments*/)
         -> UniqueActionPtr /* return type */
         {
-            return std::move(UniqueActionPtr(new cls()));
+            return std::move(UniqueActionPtr(new cls(params)));
         };
     _action_generator_map[_action_counter] = to_insert;
     _action_counter += 1;
@@ -49,7 +58,8 @@ public:
     ActionType action_type() const;
     virtual bool operator== (const Action& action) = 0;
     bool operator!= (const Action& action);
-    static UniqueActionPtr generate_random_action();
+    static UniqueActionPtr generate_random_action(
+        const GeneralActionConstructionParameters& params);
 private:
     ActionType _action_type;
 protected:
@@ -60,6 +70,7 @@ class DropAction : public Action
 {
 public:
     DropAction();
+    DropAction(const GeneralActionConstructionParameters& params);
     virtual ~DropAction();
     virtual bool operator== (const Action& action);
 };
@@ -68,9 +79,15 @@ const static bool register_drop_action = _register_action<DropAction>();
 class ForwardAction : public Action
 {
 public:
-    ForwardAction();
+    ForwardAction(int port);
+    ForwardAction(const GeneralActionConstructionParameters& params);
     virtual ~ForwardAction();
     virtual bool operator== (const Action& action);
+
+private:
+    int _port;
 };
 const static bool register_forward_action = _register_action<ForwardAction>();
+
+
 #endif

@@ -19,19 +19,23 @@ static int random_priority()
 }
 
 
-static UniqueEntryPtr generate_random_entry(int num_header_bits)
+static UniqueEntryPtr generate_random_entry(
+    const GeneralActionConstructionParameters& params,
+    int num_header_bits)
 {
     UniqueEntryPtr to_return (
         new Entry(
             random_priority(),
             Header(num_header_bits)));
-    UniqueActionPtr action_ptr = Action::generate_random_action();
+    UniqueActionPtr action_ptr = Action::generate_random_action(params);
     to_return->add_action(action_ptr);
     return std::move(to_return);
 }
 
 void PopulateRandomTable::populate_random_table(
-    Table& table,int num_entries,int num_header_bits)
+    Table& table,int num_entries,
+    const GeneralActionConstructionParameters& params,
+    int num_header_bits)
 {
     std::unordered_map<int,std::vector<UniqueEntryPtr>> entries_to_add;
 
@@ -47,7 +51,7 @@ void PopulateRandomTable::populate_random_table(
     // conflict).  Should assert out in those cases.
     while (num_added < num_entries)
     {
-        UniqueEntryPtr to_add = generate_random_entry(num_header_bits);
+        UniqueEntryPtr to_add = generate_random_entry(params,num_header_bits);
         const Header& to_add_header = to_add->match();
         
         std::vector<UniqueEntryPtr>& same_priorities_vec =

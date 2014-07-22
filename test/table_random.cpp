@@ -21,9 +21,13 @@ int main(int argc, char**argv)
 
 bool run()
 {
+    GeneralActionConstructionParameters action_params;
+    action_params.num_ports = 64;
+
+    
     Table table;
     PopulateRandomTable::populate_random_table(
-        table,NUM_ENTRIES_TO_POPULATE);
+        table,NUM_ENTRIES_TO_POPULATE,action_params);
 
     return table.num_entries() == NUM_ENTRIES_TO_POPULATE;
 }
