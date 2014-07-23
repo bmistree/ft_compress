@@ -32,6 +32,11 @@ public:
        otherwise.
      */
     bool intersects(const Header& h) const;
+    /**
+       @returns Returns true if this header can be merged with the other
+       header.  false otherwise.
+     */
+    bool can_merge(const Header& h) const;
     
     /**
        Can only be called on a header that has a wildcard.
@@ -43,6 +48,7 @@ public:
 
     /**
        Updates this header to be the union of this header and to_merge_with.
+       Assumes that can_merge has already been called and returned true.
      */
     void merge_header(const Header& to_merge_with);
     

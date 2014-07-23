@@ -127,8 +127,48 @@ const std::string& Header::header_str() const
     return _header_str;
 }
 
+
+
+bool Header::can_merge(const Header& h) const
+{
+    // do not currently handle differently-sized headers.
+    if (h._header_str.size() != _header_str.size())
+        assert(false);
+
+    // can merge if disagree in only one element.  A disagreement means that one
+    // is 0 and the other is 1.
+    bool already_had_disagreement = false;
+    for (int i = 0; i < _header_str.size(); ++i)
+    {
+        char my_char = _header_str[i];
+        // keep match any char
+        if (my_char == MATCH_ANY_CHAR)
+            continue;
+        
+        char their_char = h._header_str[i];
+        if (their_char == MATCH_ANY_CHAR)
+            continue;
+
+        if (their_char != my_char)
+        {
+            if (already_had_disagreement)
+                return false;
+            already_had_disagreement = true;
+        }
+    }
+    return true;
+}
+
+
 void Header::merge_header(const Header& to_merge_with)
 {
+    // should have already verified that could merge before performing merge.
+    
+    //// DEBUG
+    if (! can_merge(to_merge_with))
+        assert(false);
+    //// END DEBUG
+    
     // do not currently handle differently-sized headers.
     if (to_merge_with._header_str.size() != _header_str.size())
         assert(false);

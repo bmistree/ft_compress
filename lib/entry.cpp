@@ -81,6 +81,9 @@ bool Entry::can_merge(const UniqueEntryPtr& to_check) const
     if (to_check->priority() != _priority)
         return false;
 
+    if (! _match.can_merge(to_check->_match))
+        return false;
+    
     return compare_actions(to_check);
 }
 
